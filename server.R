@@ -56,7 +56,27 @@ server <- function(input, output) {
     
   })
   
+  symbol <- eventReactive(input$goButton, {
+    input$Symbol })
   
+  date <- eventReactive(input$goButton, {
+    input$Date})
+  
+  output$stockapp <- renderPlotly({
+    filtered_stocks <- stocks[stocks$symbol == input$Symbol, ]
+    filtered_stocks <- filtered_stocks[filtered_stocks$date > input$Date, ]
+    filtered_stocks <- filtered_stocks[filtered_stocks$date < '2022-03-10', ]
+    filtered_stocks <- filtered_stocks[ , c("date","open", "close")]
+    filtered_stocks$percent_change <- ((filtered_stocks$open - filtered_stocks$close)/ 
+                                         filtered_stocks$open * 100)
+ 
+    autoplot(filtered_stocks, .vars = percent_change) %>%
+      ggplotly()
+    
+  
+  
+  })
 }
+
 
 

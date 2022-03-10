@@ -222,3 +222,11 @@ p_dates <- as.vector(p_dates)
 p_dates <- as.Date(p_dates)
 length(p_dates)
 value_purchased
+
+
+stock2 <- fill_gaps(stocks)
+stock2 <- tsibble(stock2, index = date, key = symbol)
+
+stock2 %>%
+  model(NAIVE(close)) %>%
+  autoplot()

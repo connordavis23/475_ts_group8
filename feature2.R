@@ -20,7 +20,7 @@ ui <- fluidPage(
   selectInput("Symbol", 
               label = "Select a Symbol:",
               choices = unique(stocks$symbol)),
- main
+ 
   dateInput ("Date",
              label = paste('Input a Date'),
              value = "2010-01-01",
