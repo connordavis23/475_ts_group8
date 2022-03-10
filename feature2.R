@@ -15,23 +15,27 @@ stocks <- tsibble(stocks, index = date, key = symbol )
 
 
 ui <- fluidPage(
+  shinytheme("sandstone"),
   
   selectInput("Symbol", 
               label = "Select a Symbol:",
               choices = unique(stocks$symbol)),
-              dateInput ("Date",
-                         label = paste('Please Input your Date'),
-                         value = as.character(Sys.Date()),
-                         min = "2005-1-1", max = Sys.Date(),
-                         format = "dd/mm/yy",
-                         startview = 'year', language = 'eng', weekstart = 1
-              ),
-              
-              verbatimTextOutput("return"),
-              actionButton("goButton", "Go!"),
-              plotOutput("stockapp")
+ main
+  dateInput ("Date",
+             label = paste('Input a Date'),
+             value = "2010-01-01",
+             min = "2010-01-01", 
+             max = "2017-02-01",
+             format = "dd/mm/yy",
+             startview = 'year', language = 'eng', weekstart = 1
+     ),
+verbatimTextOutput("return"),
+actionButton("goButton", "Go!"),
+plotlyOutput("stockapp"),
   )
 
+
+ main
 
 server <- function(input, output, session){
   
@@ -41,34 +45,20 @@ server <- function(input, output, session){
   date <- eventReactive(input$goButton, {
     input$Date})
   
-  renderPrint({stock <- ggplot(symbol(),                    
-                                from = '2005-01-01',
-                                to = "2022-03-08",
-                                get = "stock.prices")
-  
-  
-  first_price <- stock %>% 
-    filter(date == date()) %>% 
-    dplyr::select(close)
-  
-  second_price <-  stock %>% 
-    filter(date == "2022-03-07") %>% 
-    dplyr::select(close)
-  
-  ((second_price-first_price)/first_price*100)})
-  
-  output$stockapp <- renderPlot({
-    stock2 <- ggplot(symbol(),                    
-                      from = '2005-01-01',
-                      to = "2022-03-08",
-                      get = "stock.prices")
+ main
+  output$stockapp <- renderPlotly({
+    filtered_stocks <- stocks[stocks$symbol == input$Symbol, ]
+    filtered_stocks <- filtered_stocks[filtered_stocks$date > input$Date, ]
+    filtered_stocks <- filtered_stocks[filtered_stocks$date < '2022-03-10', ]
+    filtered_stocks <- filtered_stocks[ , c("date","open", "close")]
+    filtered_stocks$percent_change <- ((filtered_stocks$open - filtered_stocks$close)/ 
+                                         filtered_stocks$open * 100)
     
-    chart <- stock2 %>% 
-      filter(date >= date() & date <= "2022-03-08") %>% 
-      select(date, close)
-    
-    chart %>% ggplot(aes(x = date, y = close)) + 
-      geom_line()
+    autoplot(filtered_stocks, .vars = percent_change) %>%
+      ggplotly()
+
+
+ main
   })
 }
 
