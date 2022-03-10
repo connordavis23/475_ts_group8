@@ -44,14 +44,19 @@ server <- function(input, output) {
     value_new <- stocks[stocks$date == new_date & stocks$symbol == input$purchased_stock , 'close'  ] * input$buy_amount
     value_new <- round(as.numeric(value_new),2)
     
-    print(value_purchased)
-    print(value_new)
-
     print('If output values are NA, either the chosen stock is not available, or the day selected is not a trading day. ')
-    paste('At the time of purchase, your stock was worth', value_purchased)
-    paste('At the new date, your stock is now worth', value_new)
-    if(value_new > value_purchased ){paste('This is an increase of', value_new - value_purchased ) }
-    if(value_new < value_purchased ){paste('This is a decrease of', value_new - value_purchased ) }
+
+    p <- paste('At the time of purchase, your stock was worth', value_purchased)
+    print(p)
+    
+    p2 <- paste('At the new date, your stock is now worth', value_new)
+    print(p2)
+    
+    p3 <- paste('This is an increase of', value_new - value_purchased )
+    if(value_new > value_purchased ){print(p3) }
+    
+    p4 <- paste('This is a decrease of', value_new - value_purchased )
+    if(value_new < value_purchased ){print(p4) }
     
     
   })
