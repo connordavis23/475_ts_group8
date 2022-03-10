@@ -1,8 +1,24 @@
+#nstall.packages('ggplot')
+#install.packages('ggplot2')
+#library('ggplot')
+library('ggplot2')
+library('shiny')
+library('dplyr')
+library('fpp3')
+library('readr')
+
+stocks <- as.data.frame(stocks)
+stocks <- read_csv('nyse_stocks.csv.zip')
+
+stocks$date <- as.Date(stocks$date)
+stocks <- tsibble(stocks, index = date, key = symbol )
+
+
 ui <- fluidPage(
   
   selectInput("Symbol", 
               label = "Select a Symbol:",
-              choices = unique(stocks$symbol),
+              choices = unique(stocks$symbol)),
               dateInput ("Date",
                          label = paste('Please Input your Date'),
                          value = as.character(Sys.Date()),
@@ -14,8 +30,8 @@ ui <- fluidPage(
               verbatimTextOutput("return"),
               actionButton("goButton", "Go!"),
               plotOutput("stockapp")
-  ),
-)
+  )
+
 
 server <- function(input, output, session){
   
@@ -25,7 +41,7 @@ server <- function(input, output, session){
   date <- eventReactive(input$goButton, {
     input$Date})
   
-  renderPrint({stock <- gg_plot(symbol(),                    
+  renderPrint({stock <- ggplot(symbol(),                    
                                 from = '2005-01-01',
                                 to = "2022-03-08",
                                 get = "stock.prices")
@@ -42,7 +58,7 @@ server <- function(input, output, session){
   ((second_price-first_price)/first_price*100)})
   
   output$stockapp <- renderPlot({
-    stock2 <- gg_plot(symbol(),                    
+    stock2 <- ggplot(symbol(),                    
                       from = '2005-01-01',
                       to = "2022-03-08",
                       get = "stock.prices")
@@ -51,9 +67,12 @@ server <- function(input, output, session){
       filter(date >= date() & date <= "2022-03-08") %>% 
       select(date, close)
     
-    chart %>% gg_plot(aes(x = date, y = close)) + 
+    chart %>% ggplot(aes(x = date, y = close)) + 
       geom_line()
   })
 }
 
 shinyApp(ui, server)
+
+
+
