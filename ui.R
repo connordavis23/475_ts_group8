@@ -27,7 +27,6 @@ ui <- fluidPage(
       min = min(stocks$date),
       max = max(stocks$date)
     ),
-
     plotOutput('ts_plot'))
     ,
   
@@ -92,7 +91,7 @@ ui <- fluidPage(
       ),
       dateInput(
         inputId = 'date2',
-        label = 'Select Other Date',
+        label = 'Select New Date',
         min = min(stocks$date),
         max = max(stocks$date)
       ),
@@ -102,7 +101,6 @@ ui <- fluidPage(
 
   )  
 )
-
 
 
 
