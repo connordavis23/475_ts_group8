@@ -1,9 +1,26 @@
+#nstall.packages('ggplot')
+#install.packages('ggplot2')
+#library('ggplot')
+library('ggplot2')
+library('shiny')
+library('dplyr')
+library('fpp3')
+library('readr')
+
+stocks <- as.data.frame(stocks)
+stocks <- read_csv('nyse_stocks.csv.zip')
+
+stocks$date <- as.Date(stocks$date)
+stocks <- tsibble(stocks, index = date, key = symbol )
+
+
 ui <- fluidPage(
   shinytheme("sandstone"),
   
   selectInput("Symbol", 
               label = "Select a Symbol:",
               choices = unique(stocks$symbol)),
+ main
   dateInput ("Date",
              label = paste('Input a Date'),
              value = "2010-01-01",
@@ -17,6 +34,9 @@ actionButton("goButton", "Go!"),
 plotlyOutput("stockapp"),
   )
 
+
+ main
+
 server <- function(input, output, session){
   
   symbol <- eventReactive(input$goButton, {
@@ -25,6 +45,7 @@ server <- function(input, output, session){
   date <- eventReactive(input$goButton, {
     input$Date})
   
+ main
   output$stockapp <- renderPlotly({
     filtered_stocks <- stocks[stocks$symbol == input$Symbol, ]
     filtered_stocks <- filtered_stocks[filtered_stocks$date > input$Date, ]
@@ -35,7 +56,13 @@ server <- function(input, output, session){
     
     autoplot(filtered_stocks, .vars = percent_change) %>%
       ggplotly()
+
+
+ main
   })
 }
 
 shinyApp(ui, server)
+
+
+
