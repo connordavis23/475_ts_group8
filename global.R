@@ -1,6 +1,7 @@
 library('fpp3')
 library('shiny')
 library('readr')
+library('plotly')
 
 
 stocks <- read_csv('nyse_stocks.csv.zip')
