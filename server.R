@@ -55,28 +55,49 @@ server <- function(input, output) {
     new_date <- input$date2
     
     value_purchased <- stocks[stocks$date == purchase_date & stocks$symbol == input$purchased_stock , 'close' ] * input$buy_amount
-    value_new <- as.integer(value_purchased)
+    value_purchased <- round(as.numeric(value_purchased),2)
     
     value_new <- stocks[stocks$date == new_date & stocks$symbol == input$purchased_stock , 'close'  ] * input$buy_amount
-    value_new <- as.integer(value_new)
-  
-    print('If output values are NA, either the chosen stock is not available, or the day selected is not a trading day. ')
-    print(value_purchased)
-    print(value_new)
+    value_new <- round(as.numeric(value_new),2)
     
-    if(value_new > value_purchased) {paste('The value of your stock increased by', value_new - value_purchased )  }
-    if(value_new < value_purchased) {paste('The value of your stock decreased by', value_new - value_purchased )  }
+    print('If output values are NA, either the chosen stock is not available, or the day selected is not a trading day. ')
+
+    p <- paste('At the time of purchase, your stock was worth', value_purchased)
+    print(p)
+    
+    p2 <- paste('At the new date, your stock is now worth', value_new)
+    print(p2)
+    
+    p3 <- paste('This is an increase of', value_new - value_purchased )
+    if(value_new > value_purchased ){print(p3) }
+    
+    p4 <- paste('This is a decrease of', value_new - value_purchased )
+    if(value_new < value_purchased ){print(p4) }
+    
     
   })
   
+  symbol <- eventReactive(input$goButton, {
+    input$Symbol })
   
+  date <- eventReactive(input$goButton, {
+    input$Date})
+  
+  output$stockapp <- renderPlotly({
+    filtered_stocks <- stocks[stocks$symbol == input$Symbol, ]
+    filtered_stocks <- filtered_stocks[filtered_stocks$date > input$Date, ]
+    filtered_stocks <- filtered_stocks[filtered_stocks$date < '2022-03-10', ]
+    filtered_stocks <- filtered_stocks[ , c("date","open", "close")]
+    filtered_stocks$percent_change <- ((filtered_stocks$open - filtered_stocks$close)/ 
+                                         filtered_stocks$open * 100)
+ 
+    autoplot(filtered_stocks, .vars = percent_change) %>%
+      ggplotly()
+    
+  
+  
+  })
 }
-
-
-
-
-
-
 
 
 

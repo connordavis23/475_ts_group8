@@ -27,7 +27,6 @@ ui <- fluidPage(
       min = min(stocks$date),
       max = max(stocks$date)
     ),
-
     plotOutput('ts_plot'))
     ,
   
@@ -93,7 +92,7 @@ ui <- fluidPage(
       ),
       dateInput(
         inputId = 'date2',
-        label = 'Select Other Date',
+        label = 'Select New Date',
         min = min(stocks$date),
         max = max(stocks$date)
       ),
@@ -136,10 +135,33 @@ ui <- fluidPage(
       plotOutput('ts_plot4')
     ),
       
-      verbatimTextOutput('stock_change'),
+      verbatimTextOutput('stock_change')
 
-  ) 
-)
+    ),
+
+  tabPanel(
+    title = 'View Open & Close Differences',
+    shinytheme("sandstone"),
+    
+    selectInput("Symbol", 
+                label = "Select a Symbol:",
+                choices = unique(stocks$symbol)),
+    
+    dateInput ("Date",
+               label = paste('Input a Date'),
+               value = "2010-01-01",
+               min = "2010-01-01", 
+               max = "2017-02-01",
+               format = "dd/mm/yy",
+               startview = 'year', language = 'eng', weekstart = 1
+    ),
+    verbatimTextOutput("return"),
+    actionButton("goButton", "Go!"),
+    plotlyOutput("stockapp"),
+  )
+ )
+
+)  
 
 
 
