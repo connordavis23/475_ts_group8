@@ -63,8 +63,7 @@ ui <- fluidPage(
         max = max(stocks$date)
       ),
 
-      plotOutput('ts_plot2'),
-      tableOutput('table_f2')
+      plotOutput('ts_plot2')
     ),
 
 #Inputs for Feature 3

@@ -24,14 +24,7 @@ server <- function(input, output) {
     autoplot(plot_df)
   })
   
-  output$table_f2 <- renderTable({
-    min.date <- input$selected_date_range[1]
-    max.date <- input$selected_date_range[2]
-    
-    plot_df <- stocks[stocks$symbol == c(input$selected_stock1, input$selected_stock2) & stocks$date >= min.date & stocks$date <= max.date , ]
-    
-    plot_df <- plot_df[ max(input$selected_metric2) ,c('date', 'symbol', input$selected_metric2) ]
-  })
+
   
   output$ts_plot4<- renderPlot({
     
