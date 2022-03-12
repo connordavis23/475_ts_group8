@@ -1,0 +1,39 @@
+
+
+Welcome to Group 8's Stock App
+
+Please follow these instructions to get the most out of the app!
+
+Tab 1: Visualize a Stock
+- Select the symbol of a stock
+- Select which metric you would like to see
+- Select a date range 
+- Enjoy!
+
+Tab 2: Compare Stocks
+- Select the symbol of a stock
+- Select another symbol to compare it to
+- Select which metric you would like to see
+- Select a date range 
+- Enjoy!
+
+Tab 3: Purchase a Stock
+- Select the symbol of a stock
+- Drag the slider to select amount of shares you would like to buy
+- Select date you would like to buy the shares on
+- Select a future or past date to see how much your stocks would be worth at a different time
+- See results of the value of your stocks and how it has changed
+
+Tab 4: Compare Sectors
+- Select a sector
+- Select another sector to compare it to
+- Select which metric you would like to see
+- Select a date range 
+- Enjoy!
+
+Tab 5: View Open & Clsoe Differences
+- Select a stock symbol
+- Select a date
+- Click "Go!"
+- You can now see the percent change differences in value from the start and end of a trading day
+- Enjoy!
