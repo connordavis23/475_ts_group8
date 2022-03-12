@@ -33,6 +33,22 @@ server <- function(input, output) {
     plot_df <- plot_df[ max(input$selected_metric2) ,c('date', 'symbol', input$selected_metric2) ]
   })
   
+  output$ts_plot4<- renderPlot({
+    
+    min.date <- input$selected_date_range[1]
+    max.date <- input$selected_date_range[2]
+    
+    plot_df <- stocks[stocks$gics_sector %in% c(input$selected_sector1, input$selected_sector2) & stocks$date >= min.date & stocks$date <= max.date , ]
+    
+    plot_df <- plot_df[ ,c('date', 'gics_sector', input$selected_metric4) ]
+    
+    agg_formula <- formula(paste(input$selected_metric4, '~ date + gics_sector'))
+    sector <- aggregate(agg_formula, plot_df, mean)
+    tsibble(sector, index=date, key=gics_sector) %>%
+      autoplot()
+
+  })
+  
   output$stock_change <- renderPrint({
     
     purchase_date <- input$date1

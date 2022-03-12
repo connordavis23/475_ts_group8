@@ -67,6 +67,7 @@ ui <- fluidPage(
       tableOutput('table_f2')
     ),
 
+#Inputs for Feature 3
     tabPanel(
       title = 'Purchase a Stock',
       selectInput(
@@ -95,8 +96,47 @@ ui <- fluidPage(
         min = min(stocks$date),
         max = max(stocks$date)
       ),
+    ),
       
-      verbatimTextOutput('stock_change'),
+      
+      #Inputs for Feature 4
+    tabPanel(
+      title = 'Compare Sectors',
+      
+      selectInput(
+        inputId =  'selected_sector1',
+        label = "Select Sector",
+        choices = unique(stocks$gics_sector),
+        selected = "Health Care"
+      ),
+        
+      selectInput(
+        inputId =  'selected_sector2',
+        label = "Select Sector",
+        choices = unique(stocks$gics_sector),
+        selected = "Industrials"
+      ),  
+        
+      selectInput(
+        inputId = 'selected_metric4',
+        label = 'Select Metric',
+        choices = names(metrics)
+      ),
+        
+      dateRangeInput(
+        inputId = 'selected_date_range',
+        label = 'Select Date Range',
+        start = min(stocks$date),
+        end = max(stocks$date),
+        min = min(stocks$date),
+        max = max(stocks$date)
+      ),
+        
+      plotOutput('ts_plot4')
+    ),
+      
+      verbatimTextOutput('stock_change')
+
     ),
 
   tabPanel(
