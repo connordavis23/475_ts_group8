@@ -230,3 +230,55 @@ stock2 <- tsibble(stock2, index = date, key = symbol)
 stock2 %>%
   model(NAIVE(close)) %>%
   autoplot()
+
+-------------------
+output$ts_plot4<- renderPlot({
+  
+  min.date <- input$selected_date_range[1]
+  max.date <- input$selected_date_range[2]
+  
+  plot_df <- stocks[stocks$gics_sector %in% c(input$selected_sector1, input$selected_sector2) & stocks$date >= min.date & stocks$date <= max.date , ]
+  
+  plot_df <- plot_df[ ,c('date', 'gics_sector', input$selected_metric4) ]
+  
+  agg_formula <- formula(paste(input$selected_metric4, '~ date + gics_sector'))
+  sector <- aggregate(agg_formula, plot_df, mean)
+  tsibble(sector, index=date, key=gics_sector) %>%
+    autoplot()
+  
+})
+
+tabPanel(
+  title = 'Compare Sectors',
+  
+  selectInput(
+    inputId =  'selected_sector1',
+    label = "Select Sector",
+    choices = unique(stocks$gics_sector),
+    selected = "Health Care"
+  ),
+  
+  selectInput(
+    inputId =  'selected_sector2',
+    label = "Select Sector",
+    choices = unique(stocks$gics_sector),
+    selected = "Industrials"
+  ),  
+  
+  selectInput(
+    inputId = 'selected_metric4',
+    label = 'Select Metric',
+    choices = names(metrics)
+  ),
+  
+  dateRangeInput(
+    inputId = 'selected_date_range',
+    label = 'Select Date Range',
+    start = min(stocks$date),
+    end = max(stocks$date),
+    min = min(stocks$date),
+    max = max(stocks$date)
+  ),
+  
+  plotOutput('ts_plot4')
+)

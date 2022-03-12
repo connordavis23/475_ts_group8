@@ -93,8 +93,6 @@ server <- function(input, output) {
  
     autoplot(filtered_stocks, .vars = percent_change) %>%
       ggplotly()
-    
-  
   
   })
 }

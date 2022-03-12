@@ -96,6 +96,7 @@ ui <- fluidPage(
         min = min(stocks$date),
         max = max(stocks$date)
       ),
+      verbatimTextOutput('stock_change')
     ),
       
       
@@ -135,9 +136,7 @@ ui <- fluidPage(
       plotOutput('ts_plot4')
     ),
       
-      verbatimTextOutput('stock_change')
 
-    ),
 
   tabPanel(
     title = 'View Open & Close Differences',
@@ -157,12 +156,12 @@ ui <- fluidPage(
     ),
     verbatimTextOutput("return"),
     actionButton("goButton", "Go!"),
-    plotlyOutput("stockapp"),
+    plotlyOutput("stockapp")
   )
  )
 
-)  
 
+)
 
 
 

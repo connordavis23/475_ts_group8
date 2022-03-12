@@ -6,6 +6,9 @@ library('shiny')
 library('dplyr')
 library('fpp3')
 library('readr')
+#install.packages('shinythemes')
+library('shinythemes')
+library('plotly')
 
 stocks <- as.data.frame(stocks)
 stocks <- read_csv('nyse_stocks.csv.zip')
@@ -35,7 +38,7 @@ plotlyOutput("stockapp"),
   )
 
 
- main
+
 
 server <- function(input, output, session){
   
@@ -45,7 +48,7 @@ server <- function(input, output, session){
   date <- eventReactive(input$goButton, {
     input$Date})
   
- main
+
   output$stockapp <- renderPlotly({
     filtered_stocks <- stocks[stocks$symbol == input$Symbol, ]
     filtered_stocks <- filtered_stocks[filtered_stocks$date > input$Date, ]
@@ -57,8 +60,6 @@ server <- function(input, output, session){
     autoplot(filtered_stocks, .vars = percent_change) %>%
       ggplotly()
 
-
- main
   })
 }
 
