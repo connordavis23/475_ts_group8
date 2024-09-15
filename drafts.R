@@ -1,4 +1,27 @@
 
+library('fpp3')
+library('shiny')
+library('readr')
+library('ggplot2')
+#install.packages('shinythemes')
+library('shinythemes')
+#install.packages('plotly')
+library('plotly')
+
+
+stocks <- read_csv('nyse_stocks.csv.zip')
+
+stocks$date <- as.Date(stocks$date)
+stocks <- tsibble(stocks, index = date, key = symbol )
+
+
+metrics <- subset(stocks,
+                  select = c('open', 'close', 'low', 'high', 'volume' ))stocks <- as.data.frame(stocks)
+stocks <- read_csv('nyse_stocks.csv.zip')
+
+stocks$date <- as.Date(stocks$date)
+stocks <- tsibble(stocks, index = date, key = symbol )
+
 sub2 <- stocks[stocks$trading_day == 1757:1762, c('date', 'trading_day', 'symbol', 'close'  )]
 max(stocks$trading_day)
 
